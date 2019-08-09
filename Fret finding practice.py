@@ -14,7 +14,7 @@ padding_x = 5
 padding_y = 7
 close = True
 already = []
-note = ''
+fret = ''
 haha = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 notes = {
         'E' : ['F','F#','G','G#','A','A#','B','C','C#','D','D#'],
@@ -102,8 +102,8 @@ total_time_label.grid(row = 8, column = 0, columnspan = 3, sticky = tk.W+tk.E,pa
 
 def random_note():
         string = list(notes.keys())[randint(0,5)]
-        fret = randint(1,11)
-        return string, fret
+        note = haha[randint(0,len(haha)-1)]
+        return string, note
 
 class choices():
     button_list = []
@@ -114,12 +114,12 @@ class choices():
         self.color = self.notebutton.cget("background")
 
     def click(self):
-        global corrects, incorrects, note, pause_timer, times, progress, answer
+        global corrects, incorrects, fret, pause_timer, times, progress, answer
         progress['value'] += 1
-        answer.config(text = note)
+        answer.config(text = fret)
         for i in choices.button_list:
             i.notebutton['state'] = 'disabled'
-        if self.value == note:
+        if self.value == fret:
             corrects += 1
             correct.config(text = str(corrects))
             self.notebutton.config(bg = 'green')
@@ -130,7 +130,7 @@ class choices():
             incorrect.config(text = str(incorrects))
             self.notebutton.config(bg = 'red')
             for i in choices.button_list:
-                if i.value == note:
+                if i.value == fret:
                     i.notebutton.config(bg = 'green')
                     pause_timer = True
                     root.after(1000,nextMeme)
@@ -138,16 +138,17 @@ class choices():
 x = 0
 y = 0
 
-for i in haha:
+for i in range(1,12):
+    choice = str(i)
     if y != 3:
-        choices(i, x, y)
-        choices.button_list.append(choices(i, x, y))
+        choices(choice, x, y)
+        choices.button_list.append(choices(choice, x, y))
         y += 1
     else:
         x += 1
         y = 1
-        choices(i, x, 0)
-        choices.button_list.append(choices(i, x, 0))
+        choices(choice, x, 0)
+        choices.button_list.append(choices(choice, x, 0))
 
 def updateClock():
     global total_time, total_time_label, pause_timer, time_limit, incorrects, incorrect
@@ -160,11 +161,11 @@ def updateClock():
         incorrects += 1
         progress['value'] += 1
         incorrect.config(text = str(incorrects))
-        answer.config(text = note)
+        answer.config(text = fret)
         pause_timer = True
         for i in choices.button_list:
             i.notebutton['state'] = 'disabled'
-            if i.value == note:
+            if i.value == fret:
                 i.notebutton.config(bg = 'green')
         root.after(1000, nextMeme)
         root.after(1000,updateClock)
@@ -172,7 +173,7 @@ def updateClock():
         root.after(100,updateClock)
 
 def nextMeme():
-    global already, note, progress, pause_timer, progress_num_label, answer
+    global already, fret, progress, pause_timer, progress_num_label, answer
     answer.config(text = '')
     progress_num_label.config(text = str(corrects + incorrects) + '/' + str(times))
     for i in choices.button_list:
@@ -183,16 +184,16 @@ def nextMeme():
         root.destroy()
         endGame()
     else:
-        string, fret = random_note()
-        while (string,fret) in already:
+        string, note = random_note()
+        while (string,note) in already or string == note:
             if times%66 == 0:
                     already = []
                     break
             string, fret = random_note()
-        description.config(text = string + ' string, fret ' + str(fret))
+        description.config(text = note + ' of string ' + string)
         time['value'] = 0
-        note = notes[string][fret-1]
-        already.append((string,fret))
+        fret = str(notes[string].index(note) + 1)
+        already.append((string,note))
 
 
 def endGame():
@@ -211,11 +212,11 @@ def endGame():
     aver_label = tk.Label(end_screen, text = 'Average per note: ' + str(round(total_time/(corrects + incorrects),2))  + 's', font = 'Helvetica 13 bold').grid(row = 4, column = 0, columnspan = 2, padx = padding_x, pady = padding_y, sticky ='W')
 
     if incorrects/(corrects + incorrects) >= 1/2:
-        feedback = tk.Label(text = "Practice more!", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
+        feedback = tk.Label(text = "Practice More!", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
     elif incorrects/corrects <= 1/2 and incorrects:
-        feedback = tk.Label(text = "That's not bad.", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
+        feedback = tk.Label(text = "That's not bad", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
     elif incorrects == 0:
-        feedback = tk.Label(text = "WOWW!", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
+        feedback = tk.Label(text = "Awesome!!", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
     end_screen.mainloop()
 updateClock()
 nextMeme()
