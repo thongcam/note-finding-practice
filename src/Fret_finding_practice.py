@@ -15,7 +15,7 @@ padding_y = 7
 close = True
 already = []
 fret = ''
-haha = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+notesList = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 notes = {
         'E' : ['F','F#','G','G#','A','A#','B','C','C#','D','D#'],
         'A' : ['A#','B','C','C#','D','D#','E','F','F#','G','G#'],
@@ -61,9 +61,9 @@ if close:
     sys.exit()
 
 root = tk.Tk()
-root.title('NOTE FINDING PRACTICE')
+root.title('FRET FINDING PRACTICE')
 
-titulo = tk.Label(root, text = 'NOTE FINDING PRACTICE', font =  'Helvetica 18 bold').grid(row = 0, column = 0, columnspan = 5, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y)
+titulo = tk.Label(root, text = 'FRET FINDING PRACTICE', font =  'Helvetica 18 bold').grid(row = 0, column = 0, columnspan = 5, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y)
 
 progress = ttk.Progressbar(root, value = 0, maximum = times, orient = tk.HORIZONTAL, length = 300, mode = 'indeterminate')
 progress.grid(row = 1, column = 1, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y)
@@ -102,7 +102,7 @@ total_time_label.grid(row = 8, column = 0, columnspan = 3, sticky = tk.W+tk.E,pa
 
 def random_note():
         string = list(notes.keys())[randint(0,5)]
-        note = haha[randint(0,len(haha)-1)]
+        note = notesList[randint(0,len(notesList)-1)]
         return string, note
 
 class choices():

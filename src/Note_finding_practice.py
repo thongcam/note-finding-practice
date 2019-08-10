@@ -15,7 +15,7 @@ padding_y = 7
 close = True
 already = []
 note = ''
-haha = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+notesList = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 notes = {
         'E' : ['F','F#','G','G#','A','A#','B','C','C#','D','D#'],
         'A' : ['A#','B','C','C#','D','D#','E','F','F#','G','G#'],
@@ -138,7 +138,7 @@ class choices():
 x = 0
 y = 0
 
-for i in haha:
+for i in notesList:
     if y != 3:
         choices(i, x, y)
         choices.button_list.append(choices(i, x, y))
