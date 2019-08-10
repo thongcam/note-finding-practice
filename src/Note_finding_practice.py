@@ -58,7 +58,7 @@ master.bind('<Return>',done)
 master.mainloop()
 
 if close:
-    sys.exit('yo mama gay lmao')
+    sys.exit()
 
 root = tk.Tk()
 root.title('NOTE FINDING PRACTICE')
@@ -124,7 +124,7 @@ class choices():
             correct.config(text = str(corrects))
             self.notebutton.config(bg = 'green')
             pause_timer = True
-            root.after(1000,nextMeme)
+            root.after(1000,nextTry)
         else:
             incorrects += 1
             incorrect.config(text = str(incorrects))
@@ -133,7 +133,7 @@ class choices():
                 if i.value == note:
                     i.notebutton.config(bg = 'green')
                     pause_timer = True
-                    root.after(1000,nextMeme)
+                    root.after(1000,nextTry)
 
 x = 0
 y = 0
@@ -166,12 +166,12 @@ def updateClock():
             i.notebutton['state'] = 'disabled'
             if i.value == note:
                 i.notebutton.config(bg = 'green')
-        root.after(1000, nextMeme)
+        root.after(1000, nextTry)
         root.after(1000,updateClock)
     else:
         root.after(100,updateClock)
 
-def nextMeme():
+def nextTry():
     global already, note, progress, pause_timer, progress_num_label, answer
     answer.config(text = '')
     progress_num_label.config(text = str(corrects + incorrects) + '/' + str(times))
@@ -218,6 +218,6 @@ def endGame():
         feedback = tk.Label(text = "WOWW!", font = 'Helvetica 14', anchor ='w').grid(row=5,column = 0, columnspan = 2, sticky = tk.W+tk.E, padx = padding_x, pady = padding_y + 6)
     end_screen.mainloop()
 updateClock()
-nextMeme()
+nextTry()
 
 root.mainloop()
